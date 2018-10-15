@@ -1,0 +1,95 @@
+// --- Desenvolvimento das Funções Auxiliares ---
+
+float measureDistance_direita()                       //Função que retorna a distância em centímetros do sensor a direita
+{
+          Serial.println("entrando na Funcao = measureDistance_direita();");
+  float pulsed;                                //Armazena o valor de tempo em µs que o pino echo fica em nível alto
+          Serial.println("Chamando a funcao Funcao trigPulse_direita");
+  trigPulse_direita();                                //Envia pulso de 10µs para o pino de trigger do sensor
+          Serial.println("Funcao trigPulse_direita chamada, de volta na measereDistance_direita");
+  long microsec_dir = ultrasonic_dir.timing();
+  pulsed = ultrasonic_dir.convert(microsec_dir, Ultrasonic::CM);                //Mede o tempo em que echo fica em nível alto e armazena na variável pulse
+              if(pulsed != 0){
+              Serial.println("Valor de echod Obtido e armazenado em pulsed"); 
+              Serial.println(pulsed,DEC);
+              Serial.println(".");
+            }else{
+              Serial.println("Valor de echod Obtido e não foi armazenado em pulsed"); 
+              Serial.println(pulsed,DEC);
+              Serial.println(".");
+            }
+  /*
+    >>> Cálculo da Conversão de µs para cm:
+   Velocidade do som = 340 m/s = 34000 cm/s
+   1 segundo = 1000000 micro segundos
+    
+      1000000 µs - 34000 cm/s
+            X µs - 1 cm
+             
+                  1E6
+            X = ------- = 29.41
+                 34000
+                  
+    Para compensar o ECHO (ida e volta do ultrassom) multiplica-se por 2
+     
+    X' = 29.41 x 2 = 58.82
+ */
+  
+  return (pulsed/58.82);                      //Calcula distância em centímetros e retorna o valor
+            Serial.println("Retornando o Valor e saindo da funcao = measureDistance_direita();");
+} //end measureDistance direita
+
+float measureDistance_esquerda()                     //Função que retorna a distância em centímetros do sensor a esquerda 
+{
+            Serial.println("entrando na funcao = measureDistance_esquerda();");
+  float pulsee;                                //Armazena o valor de tempo em µs que o pino echo fica em nível alto
+            Serial.println("Chamando a funcao Funcao trigPulse_esquerda");
+  trigPulse_esquerda();                                //Envia pulso de 10µs para o pino de trigger do sensor
+            Serial.println("Funcao trigPulse_esquerda chamada, de volta na measereDistance_esquerda");
+            Serial.println("armazenando o valor Obtido de echoe na pulsee");
+  long microsec_esq = ultrasonic_esq.timing();
+  pulsee = ultrasonic_esq.convert(microsec_esq, Ultrasonic::CM);                //Mede o tempo em que echo fica em nível alto e armazena na variável pulse
+              if(pulsee != 0){
+              Serial.println("Valor de echod Obtido e armazenado em pulsee"); 
+              Serial.println(pulsee,DEC);
+              Serial.println(".");
+            }else{
+              Serial.println("Valor de echod Obtido e não foi armazenado em pulsee"); 
+              Serial.println(pulsee,DEC);
+              Serial.println(".");
+            }
+  /*        
+    >>> Cálculo da Conversão de µs para cm:
+   Velocidade do som = 340 m/s = 34000 cm/s
+   1 segundo = 1000000 micro segundos
+    
+      1000000 µs - 34000 cm/s
+            X µs - 1 cm
+             
+                  1E6
+            X = ------- = 29.41
+                 34000
+                  
+    Para compensar o ECHO (ida e volta do ultrassom) multiplica-se por 2
+     
+    X' = 29.41 x 2 = 58.82
+ */
+   
+  return (pulsee/58.8);                      //Calcula distância em centímetros e retorna o valor
+             Serial.println("Retornando o Valor e saindo da funcao = measureDistance_esquerda();");
+} //end measureDistance esquerda
+
+void trigPulse_direita()                     //Função para gerar o pulso de trigger para o sensor HC-SR04
+{
+              Serial.println("Entrando na função TrigPulse_direita()");
+   digitalWrite(trigd, HIGH);                  //Saída de trigger em nível alto
+   delayMicroseconds(10);                     //Por 10µs ...
+   digitalWrite(trigd, LOW);                   //Saída de trigger volta a nível baixo
+} //end trigPulse direita
+
+void trigPulse_esquerda()
+{
+   digitalWrite(trige, HIGH);                  //Saída de trigger em nível alto
+   delayMicroseconds(10);                     //Por 10µs ...
+   digitalWrite(trige, LOW);                   //Saída de trigger volta a nível baixo
+} //end trigPulse esquerda
